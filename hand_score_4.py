@@ -1,30 +1,27 @@
-from math import radians
 import mediapipe as mp
 import cv2
 import numpy as np
 from mediapipe.framework.formats import landmark_pb2
 import time
-import random
-import imutils
 from pynput.keyboard import  Controller
  
 keyboard = Controller()
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 
-#ตั้งค่าจุด Mark (x,y) บนจอแสดงผล เช่น x_enemy, y_enemy = x, y (ซึ่ง scale ของ x,y ขึ้นอยู่กับตั้งค่าขนาดของภาพด้วย(การกำหนดfx=, fy=))) #ไปตั้งค่าก่อนที่บรรทัดที่ 37
+#ตั้งค่าจุด Mark (x,y) บนจอแสดงผล เช่น x_enemy, y_enemy = x, y (ซึ่ง scale ของ x,y ขึ้นอยู่กับตั้งค่าขนาดของภาพด้วย(การกำหนด fx, fy))
 x_enemy, y_enemy= 650, 400
 a_enemy, b_enemy= 200, 300
 c_enemy, d_enemy= 400, 150
 e_enemy, f_enemy= 400, 400
 
 def enemy():
-  
+  #ตั้งค่ารัศมีของวงกลม สี ความหนาของเส้น
   cv2.circle(image, (x_enemy,y_enemy), 25, (0, 0, 200), 3)
   cv2.circle(image, (a_enemy,b_enemy), 25, (255, 100, 0), 3)
   cv2.circle(image, (c_enemy,d_enemy), 25, (150, 255, 50), 3)
   cv2.circle(image, (e_enemy,f_enemy), 25, (71, 223, 246), 3)
- 
+#ตั้งค่ากล้องแสดงผล 
 video = cv2.VideoCapture(0)
  
 with mp_hands.Hands(max_num_hands=8,min_detection_confidence=0.8, min_tracking_confidence=0.5) as hands: 
@@ -34,7 +31,7 @@ with mp_hands.Hands(max_num_hands=8,min_detection_confidence=0.8, min_tracking_c
            
         image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         image = cv2.flip(image, 1)
-        image = cv2.resize(image,None,fx=1.25, fy=1.25) #ตั้งค่าของขนาดภาพ เช่น 1080*720 fx=2.25, fy=1.5
+        image = cv2.resize(image,None,fx=1.25, fy=1.25) #ตั้งค่าของขนาดภาพโดยที่ fx คือความยาวและ fy คือความกว้างและค่าที่ใส่จะเป็นตัวคูณของค่าเริ่มต้น(640*480)
         imageHeight, imageWidth, _ = image.shape
         results = hands.process(image)
         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
