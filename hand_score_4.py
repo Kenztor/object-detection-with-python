@@ -30,7 +30,7 @@ with mp_hands.Hands(max_num_hands=8,min_detection_confidence=0.8, min_tracking_c
         _, frame = video.read()
            
         image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        image = cv2.flip(image, 1)
+        image = cv2.flip(image, 1) #ตั้งค่าการกลับภาพของกล้อง (0-1)
         image = cv2.resize(image,None,fx=1.25, fy=1.25) #ตั้งค่าของขนาดภาพโดยที่ fx คือความยาวและ fy คือความกว้างและค่าที่ใส่จะเป็นตัวคูณของค่าเริ่มต้น(640*480)
         imageHeight, imageWidth, _ = image.shape
         results = hands.process(image)
